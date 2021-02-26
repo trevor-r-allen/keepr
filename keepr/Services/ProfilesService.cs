@@ -22,5 +22,15 @@ namespace keepr.Services
       }
       return profile;
     }
+
+    internal Profile GetById(string id)
+    {
+      Profile profile = _profilesRepo.GetById(id);
+      if (profile == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return profile;
+    }
   }
 }
