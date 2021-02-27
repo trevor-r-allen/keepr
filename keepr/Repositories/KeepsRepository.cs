@@ -33,16 +33,16 @@ namespace keepr.Repositories
       FROM keeps keep
       JOIN profiles profile ON keep.creatorId = profile.id
       WHERE keep.id = @id;";
-      return _db.Query<Keep, Profile, Keep>(sql, (keep, profile) => { keep.Creator = profile; return keep; }, splitOn: "id").FirstOrDefault();
+      return _db.Query<Keep, Profile, Keep>(sql, (keep, profile) => { keep.Creator = profile; return keep; }, new { id }, splitOn: "id").FirstOrDefault();
     }
 
     internal int Create(Keep newKeep)
     {
       string sql = @"
       INSERT INTO keeps
-      (creatorId, name, description, img, views, shares, keeps)
+      (creatorId, name, description, img)
       VALUES
-      (@CreatorId, @Name, @Description, @Img, @Views, @Shares, @Keeps);
+      (@CreatorId, @Name, @Description, @Img);
       SELECT LAST_INSERT_ID();";
       return _db.ExecuteScalar<int>(sql, newKeep);
     }

@@ -1,0 +1,85 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using CodeWorks.Auth0Provider;
+using keepr.Models;
+using keepr.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace keepr.Controllers
+{
+  [ApiController]
+  [Route("api/[controller]")]
+  public class VaultsController : ControllerBase
+  {
+    private readonly VaultsService _vaultsService;
+    public VaultsController(VaultsService vaultsService)
+    {
+      _vaultsService = vaultsService;
+    }
+
+    [HttpGet("{id}")]
+    public ActionResult<Vault> GetById(int id)
+    {
+      try
+      {
+        return Ok(_vaultsService.GetById(id));
+      }
+      catch (Exception err)
+      {
+        return BadRequest(err.Message);
+      }
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<ActionResult<Vault>> Create([FromBody] Vault newVault)
+    {
+      try
+      {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        newVault.CreatorId = userInfo.Id;
+        Vault createdVault = _vaultsService.Create(newVault);
+        createdVault.Creator = userInfo;
+        return Ok(createdVault);
+      }
+      catch (Exception err)
+      {
+        return BadRequest(err.Message);
+      }
+    }
+
+    [HttpPut("{id}")]
+    [Authorize]
+    public async Task<ActionResult<Vault>> Edit(int id, [FromBody] Vault editedVault)
+    {
+      try
+      {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        editedVault.Id = id;
+        editedVault.Creator = userInfo;
+        return Ok(_vaultsService.Edit(userInfo.Id, editedVault));
+      }
+      catch (Exception err)
+      {
+        return BadRequest(err.Message);
+      }
+    }
+
+    [HttpDelete("{id}")]
+    [Authorize]
+    public async Task<ActionResult<string>> Delete(int id)
+    {
+      try
+      {
+        Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
+        return Ok(_vaultsService.Delete(userInfo.Id, id));
+      }
+      catch (Exception err)
+      {
+        return BadRequest(err.Message);
+      }
+    }
+  }
+}

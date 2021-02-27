@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace keepr.Controllers
 {
   [ApiController]
-  [Route("[controller]")]
+  [Route("api/[controller]")]
   [Authorize]
   public class AccountController : ControllerBase
   {

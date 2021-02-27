@@ -54,12 +54,12 @@ namespace keepr.Services
 
     internal string Delete(string userId, int id)
     {
-      Keep original = _keepsRepo.GetById(id);
-      if (original == null)
+      Keep keep = _keepsRepo.GetById(id);
+      if (keep == null)
       {
         throw new Exception("Invalid Id");
       }
-      if (original.CreatorId != userId)
+      if (keep.CreatorId != userId)
       {
         throw new Exception("Access Denied: Cannot delete a keep you did not create");
       }
