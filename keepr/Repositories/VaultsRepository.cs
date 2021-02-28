@@ -32,7 +32,7 @@ namespace keepr.Repositories
       INSERT INTO vaults
       (creatorId, name, description, isPrivate)
       VALUES
-      (@CreatorId, @Name, @Description, @IsPrivate)
+      (@CreatorId, @Name, @Description, @IsPrivate);
       SELECT LAST_INSERT_ID();";
       return _db.ExecuteScalar<int>(sql, newVault);
     }
