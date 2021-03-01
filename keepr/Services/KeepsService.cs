@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using keepr.Models;
 using keepr.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace keepr.Services
 {
   public class KeepsService
   {
     private readonly KeepsRepository _keepsRepo;
-    public KeepsService(KeepsRepository keepsRepo)
+    private readonly VaultsRepository _vaultsRepo;
+    public KeepsService(KeepsRepository keepsRepo, VaultsRepository vaultsRepo)
     {
       _keepsRepo = keepsRepo;
+      _vaultsRepo = vaultsRepo;
     }
 
     internal IEnumerable<Keep> GetAll()
@@ -26,6 +29,16 @@ namespace keepr.Services
         throw new Exception("Invalid Id");
       }
       return keep;
+    }
+
+    internal IEnumerable<KeepVaultKeepViewModel> GetKeepsByVaultId(int vaultId)
+    {
+      Vault vault = _vaultsRepo.GetById(vaultId);
+      if (vault == null)
+      {
+        throw new Exception("Invalid Id");
+      }
+      return _keepsRepo.GetKeepsByVaultId(vaultId);
     }
 
     internal Keep Create(Keep newKeep)
@@ -51,6 +64,7 @@ namespace keepr.Services
 
       return _keepsRepo.Edit(editedKeep);
     }
+
 
     internal string Delete(string userId, int id)
     {

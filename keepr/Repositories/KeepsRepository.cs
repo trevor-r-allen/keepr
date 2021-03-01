@@ -35,6 +35,26 @@ namespace keepr.Repositories
       WHERE keep.id = @id;";
       return _db.Query<Keep, Profile, Keep>(sql, (keep, profile) => { keep.Creator = profile; return keep; }, new { id }, splitOn: "id").FirstOrDefault();
     }
+    // REVIEW WTF IS THIS BANANAS SHIZ? (TREVOR'S HACKY BULLSHIZ)
+    internal IEnumerable<KeepVaultKeepViewModel> GetKeepsByVaultId(int vaultId)
+    {
+      string sql = @"
+      SELECT
+      keep.*, 
+      vaultkeep.id as VaultKeepId,
+      vault.*,
+      profile.*,
+      FROM vaultkeeps vaultkeep
+      JOIN vaults vault ON vaultkeep.vaultId == vault.id
+      JOIN keeps keep ON vaultkeep.keepId == keep.id
+      JOIN profiles profile ON keep.creatorId == profile.id
+      WHERE vaultId = @vaultId;";
+      return _db.Query<KeepVaultKeepViewModel, Profile, KeepVaultKeepViewModel>(sql, (keep, profile) =>
+      {
+        keep.Creator = profile;
+        return keep;
+      }, new { vaultId }, splitOn: "id");
+    }
 
     internal int Create(Keep newKeep)
     {
