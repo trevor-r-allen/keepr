@@ -22,6 +22,8 @@ namespace keepr.Repositories
     internal int Create(VaultKeep newVaultKeep)
     {
       string sql = @"
+      UPDATE keeps SET keeps = keeps+1 WHERE id = @keepId;
+
       INSERT INTO vaultkeeps
         (creatorId, vaultId, keepId)
       VALUES
@@ -30,10 +32,13 @@ namespace keepr.Repositories
       return _db.ExecuteScalar<int>(sql, newVaultKeep);
     }
 
-    internal void Delete(int id)
+    internal void Delete(int id, int keepId)
     {
-      string sql = "DELETE FROM vaultkeeps WHERE id = @id LIMIT 1;";
-      _db.Execute(sql, new { id });
+      string sql = @"
+      UPDATE keeps SET keeps = keeps-1 WHERE id = @keepId;
+      
+      DELETE FROM vaultkeeps WHERE id = @id LIMIT 1;";
+      _db.Execute(sql, new { id, keepId });
     }
   }
 }

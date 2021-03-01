@@ -28,6 +28,8 @@ namespace keepr.Repositories
     internal Keep GetById(int id)
     {
       string sql = @"
+      UPDATE keeps SET views = views+1 WHERE id = @id;
+
       SELECT
       keep.*, profile.*
       FROM keeps keep
@@ -90,6 +92,7 @@ namespace keepr.Repositories
       _db.Execute(sql, editedKeep);
       return editedKeep;
     }
+
 
     internal void Delete(int id)
     {

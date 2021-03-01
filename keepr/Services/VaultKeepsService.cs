@@ -48,7 +48,7 @@ namespace keepr.Services
       {
         throw new Exception("Access Denied: Cannot edit a vault you did not create");
       }
-      _vaultKeepsRepo.Delete(id);
+      _vaultKeepsRepo.Delete(id, vaultKeep.KeepId);
       return "Successfully removed keep from vault";
     }
   }
