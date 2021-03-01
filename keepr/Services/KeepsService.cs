@@ -36,14 +36,14 @@ namespace keepr.Services
       return _keepsRepo.GetKeepsByProfileId(profileId);
     }
 
-    internal IEnumerable<KeepVaultKeepViewModel> GetKeepsByVaultId(int vaultId)
+    internal IEnumerable<KeepVaultKeepViewModel> GetKeepsByVaultId(string userId, int vaultId)
     {
       Vault vault = _vaultsRepo.GetById(vaultId);
       if (vault == null)
       {
         throw new Exception("Invalid Id");
       }
-      if (vault.IsPrivate == true)
+      if (vault.IsPrivate == true && vault.CreatorId != userId)
       {
         throw new Exception("Access Denied: This vault is private");
       }

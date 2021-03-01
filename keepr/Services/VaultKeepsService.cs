@@ -23,7 +23,7 @@ namespace keepr.Services
       Keep keep = _keepsRepo.GetById(newVaultKeep.KeepId);
       if (vault == null)
       {
-        throw new Exception("Invalid Party Id");
+        throw new Exception("Invalid Vault Id");
       }
       if (keep == null)
       {

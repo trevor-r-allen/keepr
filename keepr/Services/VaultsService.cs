@@ -15,14 +15,14 @@ namespace keepr.Services
       _vaultsRepo = vaultsRepo;
     }
 
-    internal Vault GetById(int id)
+    internal Vault GetById(string userId, int id)
     {
       Vault vault = _vaultsRepo.GetById(id);
       if (vault == null)
       {
         throw new Exception("Invalid Id");
       }
-      if (vault.IsPrivate == true)
+      if (vault.IsPrivate == true && vault.CreatorId != userId)
       {
         throw new Exception("Access Denied: This vault is private");
       }

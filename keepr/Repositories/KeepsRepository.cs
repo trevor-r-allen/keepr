@@ -55,12 +55,10 @@ namespace keepr.Repositories
       SELECT
       keep.*, 
       vaultkeep.id as VaultKeepId,
-      vault.*,
-      profile.*,
+      profile.*
       FROM vaultkeeps vaultkeep
-      JOIN vaults vault ON vaultkeep.vaultId == vault.id
-      JOIN keeps keep ON vaultkeep.keepId == keep.id
-      JOIN profiles profile ON keep.creatorId == profile.id
+      JOIN keeps keep ON vaultkeep.keepId = keep.id
+      JOIN profiles profile ON keep.creatorId = profile.id
       WHERE vaultId = @vaultId;";
       return _db.Query<KeepVaultKeepViewModel, Profile, KeepVaultKeepViewModel>(sql, (keep, profile) =>
       {
