@@ -43,6 +43,10 @@ namespace keepr.Services
       {
         throw new Exception("Invalid Id");
       }
+      if (vault.IsPrivate == true)
+      {
+        throw new Exception("Access Denied: This vault is private");
+      }
       return _keepsRepo.GetKeepsByVaultId(vaultId);
     }
 
