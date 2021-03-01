@@ -8,8 +8,19 @@
 </template>
 
 <script>
+import { computed, onMounted, reactive } from 'vue'
+import { AppState } from '../AppState'
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    const state = reactive({
+      keeps: computed(() => AppState.keeps)
+    })
+    onMounted(() => keepsService.getAllKeeps())
+    return {
+      state
+    }
+  }
 }
 </script>
 
