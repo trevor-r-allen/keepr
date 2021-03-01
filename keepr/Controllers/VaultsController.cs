@@ -27,7 +27,12 @@ namespace keepr.Controllers
       try
       {
         Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
-        return Ok(_vaultsService.GetById(userInfo.Id, id));
+        string userId = "notAuthorized";
+        if (userInfo != null)
+        {
+          userId = userInfo.Id;
+        }
+        return Ok(_vaultsService.GetById(userId, id));
       }
       catch (Exception err)
       {
@@ -40,7 +45,12 @@ namespace keepr.Controllers
       try
       {
         Profile userInfo = await HttpContext.GetUserInfoAsync<Profile>();
-        return Ok(_keepsService.GetKeepsByVaultId(userInfo.Id, id));
+        string userId = "notAuthorized";
+        if (userInfo != null)
+        {
+          userId = userInfo.Id;
+        }
+        return Ok(_keepsService.GetKeepsByVaultId(userId, id));
       }
       catch (Exception err)
       {
