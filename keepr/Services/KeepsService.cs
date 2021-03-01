@@ -31,6 +31,11 @@ namespace keepr.Services
       return keep;
     }
 
+    internal IEnumerable<Keep> GetKeepsByProfileId(string profileId)
+    {
+      return _keepsRepo.GetKeepsByProfileId(profileId);
+    }
+
     internal IEnumerable<KeepVaultKeepViewModel> GetKeepsByVaultId(int vaultId)
     {
       Vault vault = _vaultsRepo.GetById(vaultId);

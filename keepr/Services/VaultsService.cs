@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using keepr.Models;
 using keepr.Repositories;
 
@@ -21,6 +23,10 @@ namespace keepr.Services
         throw new Exception("Invalid Id");
       }
       return vault;
+    }
+    internal IEnumerable<Vault> GetVaultsByProfileId(string profileId)
+    {
+      return _vaultsRepo.GetVaultsByProfileId(profileId).ToList().FindAll(vault => vault.IsPrivate = false);
     }
 
     internal Vault Create(Vault newVault)
