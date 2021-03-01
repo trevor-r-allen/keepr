@@ -87,6 +87,7 @@ namespace keepr
         app.UseDeveloperExceptionPage();
         app.UseSwagger();
         app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "keepr v1"));
+        app.UseCors("CorsDevPolicy");
       }
 
       app.UseHttpsRedirection();
