@@ -22,11 +22,15 @@ namespace keepr.Services
       {
         throw new Exception("Invalid Id");
       }
+      if (vault.IsPrivate == true)
+      {
+        throw new Exception("Access Denied: This vault is private");
+      }
       return vault;
     }
     internal IEnumerable<Vault> GetVaultsByProfileId(string profileId)
     {
-      return _vaultsRepo.GetVaultsByProfileId(profileId).ToList().FindAll(vault => vault.IsPrivate = false);
+      return _vaultsRepo.GetVaultsByProfileId(profileId).ToList().FindAll(vault => vault.IsPrivate == false);
     }
 
     internal Vault Create(Vault newVault)
