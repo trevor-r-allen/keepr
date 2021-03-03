@@ -1,20 +1,23 @@
 <template>
-  <div class="masonry-item">
+  <div class="masonry-item" data-toggle="modal" :data-target="'#keepModal'+keepProp.id">
     <div class="keepComponent card">
       <img class="keepImg card-img-top img-fluid" :src="keepProp.img" alt="">
-      <h4 class="keepName card-title text-light " style="position: absolute;">
+      <h4 class="keepName card-title text-light" style="position: absolute;">
         {{ keepProp.name }}
       </h4>
       <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}">
         <img class="creatorPic img-fluid" :src="keepProp.creator.picture" alt="">
       </router-link>
     </div>
+    <keep-modal-component :key="keepProp.id" :keep-prop="keepProp" />
   </div>
 </template>
 
 <script>
 import { reactive } from 'vue'
+import KeepModalComponent from './KeepModalComponent.vue'
 export default {
+  components: { KeepModalComponent },
   name: 'KeepComponent',
   props: {
     keepProp: {
@@ -46,8 +49,6 @@ border-radius: 10px;
 }
 .keepImg{
 border-radius: 10px;
-mask-image: linear-gradient(180.45deg, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.53) 99);
--webkit-mask-image: linear-gradient(180.45deg, rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0.53) 99);
 }
 .keepName{
   position: absolute;
