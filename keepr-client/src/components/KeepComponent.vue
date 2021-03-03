@@ -1,21 +1,22 @@
 <template>
-  <div class="masonry-item" data-toggle="modal" :data-target="'#keepModal'+keepProp.id">
-    <div class="keepComponent card">
+  <div class="masonry-item">
+    <div class="keepComponent card" @click="getKeepById()" data-toggle="modal" :data-target="'#keepModal'+keepProp.id">
       <img class="keepImg card-img-top img-fluid" :src="keepProp.img" alt="">
       <h4 class="keepName card-title text-light" style="position: absolute;">
         {{ keepProp.name }}
       </h4>
-      <router-link :to="{name: 'Profile', params: {id: keepProp.creatorId}}">
-        <img class="creatorPic img-fluid" :src="keepProp.creator.picture" alt="">
-      </router-link>
+      <img @click.stop="toProfilePage()" class="creatorPic img-fluid" :src="keepProp.creator.picture" alt="">
     </div>
-    <keep-modal-component :key="keepProp.id" :keep-prop="keepProp" />
+    <keep-modal-component :keep-prop="state.activeKeep" />
   </div>
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
 import KeepModalComponent from './KeepModalComponent.vue'
+import { keepsService } from '../services/KeepsService'
+import { AppState } from '../AppState'
+import router from '../router'
 export default {
   components: { KeepModalComponent },
   name: 'KeepComponent',
@@ -27,10 +28,18 @@ export default {
   },
   setup(props) {
     const state = reactive({
-
+      activeKeep: computed(() => AppState.activeKeep)
     })
+    function getKeepById() {
+      keepsService.getKeepById(props.keepProp.id)
+    }
+    function toProfilePage() {
+      router.push({ name: 'Profile', params: { id: props.keepProp.creatorId } })
+    }
     return {
-      state
+      state,
+      getKeepById,
+      toProfilePage
     }
   }
 }

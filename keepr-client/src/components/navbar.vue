@@ -49,32 +49,6 @@
             logout
           </div> -->
     </div>
-    <div class="collapse navbar-collapse" id="navbarToggler">
-      <button
-        class="btn btn-outline-secondary text-uppercase"
-        @click="login"
-        v-if="!user.isAuthenticated"
-      >
-        Login
-      </button>
-
-      <div v-else class="bg-secondary p-1">
-        <router-link :to="{ name: 'Profile', params: {id: state.account.id}}">
-          <img
-            :src="user.picture"
-            alt="user photo"
-            height="50"
-            class="rounded-circle"
-          />
-        </router-link>
-      <!-- <div
-            class="list-group-item list-group-item-action hoverable"
-            @click="logout"
-          >
-            logout
-          </div> -->
-      </div>
-    </div>
   </nav>
 </template>
 
