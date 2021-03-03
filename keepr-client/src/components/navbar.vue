@@ -1,14 +1,22 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-primary bg-primary justify-content-between">
     <router-link class="navbar-brand d-flex" :to="{ name: 'Home' }">
       <div class="d-flex flex-column align-items-center">
-        <img
-          alt="logo"
-          src="../assets/img/cw-logo.png"
-          height="45"
-        />
+        <h1 class="text-secondary border border-lg border-secondary px-2">
+          K
+        </h1>
       </div>
     </router-link>
+    <form class="form-inline">
+      <div class="input-group">
+        <input v-model="state.query" class="form-control" type="search" placeholder="Search" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn bg-white text-primary my-2 my-sm-0" type="submit">
+            <i class="fa fa-search" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </form>
     <button
       class="navbar-toggler"
       type="button"
@@ -23,44 +31,35 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <router-link :to="{ name: 'Home' }" class="nav-link">
-            Home
-          </router-link>
         </li>
         <li class="nav-item">
-          <router-link :to="{ name: 'About' }" class="nav-link">
-            About
-          </router-link>
         </li>
       </ul>
       <span class="navbar-text">
         <button
-          class="btn btn-outline-primary text-uppercase"
+          class="btn btn-outline-secondary text-uppercase"
           @click="login"
           v-if="!user.isAuthenticated"
         >
           Login
         </button>
 
-        <div class="dropdown" v-else>
-          <div
-            class="dropdown-toggle"
-            @click="state.dropOpen = !state.dropOpen"
-          >
-            <img
-              :src="user.picture"
-              alt="user photo"
-              height="40"
-              class="rounded"
-            />
-            <span class="mx-3">{{ user.name }}</span>
-          </div>
+        <div v-else>
+
+          <img
+            :src="user.picture"
+            alt="user photo"
+            height="40"
+            class="rounded-circle"
+          />
+          <span class="mx-3">{{ user.name }}</span>
+
           <div
             class="dropdown-menu p-0 list-group w-100"
             :class="{ show: state.dropOpen }"
             @click="state.dropOpen = false"
           >
-            <router-link :to="{ name: 'Account' }">
+            <router-link :to="{ name: 'Profile', params: {id: state.account.id}}">
               <div class="list-group-item list-group-item-action hoverable">
                 Account
               </div>
@@ -86,7 +85,8 @@ export default {
   name: 'Navbar',
   setup() {
     const state = reactive({
-      dropOpen: false
+      account: computed(() => AppState.account),
+      query: ''
     })
     return {
       state,
@@ -122,6 +122,6 @@ a:hover {
   text-transform: uppercase;
 }
 .nav-item .nav-link.router-link-exact-active{
-  color: var(--primary);
+  color: var(--secondary);
 }
 </style>

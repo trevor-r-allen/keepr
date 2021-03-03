@@ -1,16 +1,18 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo">
-    <h1 class="my-5 bg-dark text-light p-3 rounded d-flex align-items-center">
-      <span class="mx-2 text-white">Vue 3 Starter</span>
-    </h1>
+  <div class="home flex-grow-1 container-fluid">
+    <div class="masonry justify-content-around mt-5">
+      <keep-component v-for="keep in state.keeps" :key="keep.id" :keep-prop="keep" />
+    </div>
   </div>
 </template>
 
 <script>
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
+import { keepsService } from '../services/KeepsService'
+import KeepComponent from '../components/KeepComponent.vue'
 export default {
+  components: { KeepComponent },
   name: 'Home',
   setup() {
     const state = reactive({
@@ -33,4 +35,5 @@ export default {
     width: 200px;
   }
 }
+@import "../assets/css/global.css";
 </style>
