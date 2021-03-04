@@ -3,7 +3,7 @@
     <div class="row mt-5">
       <div class="col">
         <h1>
-          {{ state.activeVault.name }} <i v-if="state.activeVault.creatorId === state.account.id" @click="deleteVault(state.activeVault.id)" class="fa fa-trash text-danger" aria-hidden="true"></i>
+          {{ state.activeVault.name }} <i v-if="user.isAuthenticated && (state.activeVault.creatorId === state.account.id)" @click="deleteVault(state.activeVault.id)" class="fa fa-trash text-danger" aria-hidden="true"></i>
         </h1>
       </div>
     </div>
@@ -24,6 +24,7 @@ export default {
   setup() {
     const route = useRoute()
     const state = reactive({
+      user: computed(() => AppState.user),
       account: computed(() => AppState.account),
       activeVault: computed(() => AppState.activeVault),
       activeVaultKeeps: computed(() => AppState.activeVaultKeeps)

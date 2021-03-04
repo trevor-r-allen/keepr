@@ -15,7 +15,10 @@
         <h1>Vaults <i v-if="route.params.id == state.account.id" class="fa fa-plus text-primary" data-toggle="modal" data-target="#createVaultModal" aria-hidden="true"></i></h1>
         <create-vault-modal />
       </div>
-      <div class="masonry">
+      <div v-if="route.params.id === state.account.id" class="masonry">
+        <vault-component v-for="vault in state.myVaults" :key="vault.id" :vault-prop="vault" />
+      </div>
+      <div v-else class="masonry">
         <vault-component v-for="vault in state.profileVaults" :key="vault.id" :vault-prop="vault" />
       </div>
     </div>
@@ -24,7 +27,10 @@
         <h1>Keeps <i v-if="route.params.id == state.account.id" class="fa fa-plus text-primary" data-toggle="modal" data-target="#createKeepModal" aria-hidden="true"></i></h1>
         <create-keep-modal />
       </div>
-      <div class="masonry">
+      <div v-if="route.params.id === state.account.id" class="masonry">
+        <keep-component v-for="keep in state.myKeeps" :key="keep.id" :keep-prop="keep" />
+      </div>
+      <div v-else class="masonry">
         <keep-component v-for="keep in state.profileKeeps" :key="keep.id" :keep-prop="keep" />
       </div>
     </div>
