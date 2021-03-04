@@ -6,8 +6,8 @@
       </div>
       <div class="col-3">
         <h1>{{ state.viewedProfile.name }}</h1>
-        <h6>Vaults: {{ state.viewedProfile.vaults }}</h6>
-        <h6>Keeps: {{ state.viewedProfile.keeps }}</h6>
+        <h6>Vaults: {{ state.vaultCount }}</h6>
+        <h6>Keeps: {{ state.keepCount }}</h6>
       </div>
     </div>
     <div class="profileVaults row">
