@@ -12,7 +12,7 @@
               <div class="row">
                 <div class="col-12">
                   <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button :id="'closeModal'+keepProp.id" type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -58,10 +58,6 @@
                       Add to Vault
                     </button>
                     <div class="dropdown-menu" aria-labelledby="addToVaultDropdown">
-                      <!-- <add-to-vault-dropdown-button v-for="vault in state.myVaults"
-                                                    :key="vault.id"
-                                                    :vault-prop="vault"
-                      /> -->
                       <button v-for="vault in state.myVaults"
                               :key="vault.id"
                               :vault-prop="vault"
@@ -77,15 +73,6 @@
                 <div class="col-1">
                   <i v-if="keepProp.creatorId == state.account.id" @click="deleteKeep(keepProp.id)" class="fa fa-trash fa-2x text-danger" aria-hidden="true"></i>
                 </div>
-                <div class="col-5">
-                  <img
-                    :src="keepProp.creator.picture"
-                    alt="user photo"
-                    height="50"
-                    class="rounded-circle"
-                  />
-                  <span class="mx-3 text-dark">{{ keepProp.creator.name }}</span>
-                </div>
               </div>
             </div>
           </div>
@@ -100,6 +87,7 @@ import { computed, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { vaultKeepsService } from '../services/VaultKeepsService'
 import { useRoute } from 'vue-router'
+import { keepsService } from '../services/KeepsService'
 export default {
   name: 'KeepModalComponent',
   props: {
@@ -119,10 +107,15 @@ export default {
       const newVaultKeep = { keepId: keepId, vaultId: vaultId }
       await vaultKeepsService.createVaultKeep(newVaultKeep)
     }
+    async function deleteKeep(keepId) {
+      await keepsService.deleteKeep(keepId)
+      document.getElementById('closeModal' + props.keepProp.id).click()
+    }
     return {
       route,
       state,
-      createVaultKeep
+      createVaultKeep,
+      deleteKeep
     }
   }
 
@@ -130,5 +123,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+.fa-trash:hover{
+  cursor: pointer;
+}
 </style>

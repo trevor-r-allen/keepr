@@ -19,8 +19,8 @@ class VaultsService {
 
   async createVault(vault) {
     const res = await api.post('api/vaults', vault)
-    AppState.myVaults.push = res.data
-    AppState.profileVaults.push = res.data
+    AppState.myVaults.push(res.data)
+    AppState.profileVaults.push(res.data)
   }
 
   async editVault(id, editedVault) {
