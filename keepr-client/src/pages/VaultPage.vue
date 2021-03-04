@@ -2,7 +2,7 @@
   <div class="home flex-grow-1 container-fluid">
     <h1>{{ state.activeVault.name }}</h1>
     <div class="masonry justify-content-around mt-5">
-      <keep-component v-for="keep in state.keeps" :key="keep.id" :keep-prop="keep" />
+      <keep-component v-for="keep in state.activeVaultKeeps" :key="keep.id" :keep-prop="keep" />
     </div>
   </div>
 </template>

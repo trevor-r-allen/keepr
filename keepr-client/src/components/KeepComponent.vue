@@ -5,7 +5,7 @@
       <h4 class="keepName card-title text-light" style="position: absolute;">
         {{ keepProp.name }}
       </h4>
-      <img @click.stop="toProfilePage()" class="creatorPic img-fluid" :src="keepProp.creator.picture" alt="">
+      <img v-if="route.name == 'Home'" @click.stop="toProfilePage()" class="creatorPic img-fluid" :src="keepProp.creator.picture" alt="">
     </div>
     <keep-modal-component :keep-prop="state.activeKeep" />
   </div>
@@ -17,6 +17,7 @@ import KeepModalComponent from './KeepModalComponent.vue'
 import { keepsService } from '../services/KeepsService'
 import { AppState } from '../AppState'
 import router from '../router'
+import { useRoute } from 'vue-router'
 export default {
   components: { KeepModalComponent },
   name: 'KeepComponent',
@@ -27,16 +28,18 @@ export default {
     }
   },
   setup(props) {
+    const route = useRoute()
     const state = reactive({
       activeKeep: computed(() => AppState.activeKeep)
     })
-    function getKeepById() {
-      keepsService.getKeepById(props.keepProp.id)
+    async function getKeepById() {
+      await keepsService.getKeepById(props.keepProp.id)
     }
     function toProfilePage() {
       router.push({ name: 'Profile', params: { id: props.keepProp.creatorId } })
     }
     return {
+      route,
       state,
       getKeepById,
       toProfilePage

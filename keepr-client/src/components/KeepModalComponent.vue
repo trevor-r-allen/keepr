@@ -17,7 +17,7 @@
                     </button>
                   </div>
                 </div>
-                <div class="col-12 mb-4 ">
+                <div class="col-12 mb-4 text-center">
                   <span>
                     <i class="fa fa-eye text-primary ml-2 mr-1" aria-hidden="true"></i>
                     {{ keepProp.views }}
@@ -31,7 +31,7 @@
                 </div>
               </div>
               <div class="row justify-content-center">
-                <div class="col-10">
+                <div class="col-10 text-center">
                   <div class="modal-body">
                     <h1 class="modal-title" :id="'keepModal'+keepProp.id+'Label'">
                       {{ keepProp.name }}
@@ -45,24 +45,46 @@
                   </p>
                 </div>
               </div>
-              <div class="row my-3">
-                <div class="col">
+              <div class="row my-3 justify-content-between">
+                <div class="col-3">
                   <div class="dropdown">
                     <button class="btn btn-outline-success dropdown-toggle"
                             type="button"
-                            id="dropdownMenu2"
+                            id="addToVaultDropdown"
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
                     >
-                      Dropdown
+                      Add to Vault
                     </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                      <button class="dropdown-item" type="button">
-                        Action
+                    <div class="dropdown-menu" aria-labelledby="addToVaultDropdown">
+                      <!-- <add-to-vault-dropdown-button v-for="vault in state.myVaults"
+                                                    :key="vault.id"
+                                                    :vault-prop="vault"
+                      /> -->
+                      <button v-for="vault in state.myVaults"
+                              :key="vault.id"
+                              :vault-prop="vault"
+                              class="dropdown-item"
+                              type="button"
+                              @click="createVaultKeep(state.activeKeep.id, vault.id)"
+                      >
+                        {{ vault.name }}
                       </button>
                     </div>
                   </div>
+                </div>
+                <div class="col-1">
+                  <i v-if="keepProp.creatorId == state.account.id" @click="deleteKeep(keepProp.id)" class="fa fa-trash fa-2x text-danger" aria-hidden="true"></i>
+                </div>
+                <div class="col-5">
+                  <img
+                    :src="keepProp.creator.picture"
+                    alt="user photo"
+                    height="50"
+                    class="rounded-circle"
+                  />
+                  <span class="mx-3 text-dark">{{ keepProp.creator.name }}</span>
                 </div>
               </div>
             </div>
@@ -76,6 +98,8 @@
 <script>
 import { computed, reactive } from 'vue'
 import { AppState } from '../AppState'
+import { vaultKeepsService } from '../services/VaultKeepsService'
+import { useRoute } from 'vue-router'
 export default {
   name: 'KeepModalComponent',
   props: {
@@ -85,10 +109,21 @@ export default {
     }
   },
   setup(props) {
+    const route = useRoute()
     const state = reactive({
-      myVaults: computed(() => AppState.myVaults)
+      account: computed(() => AppState.account),
+      myVaults: computed(() => AppState.myVaults),
+      activeKeep: computed(() => AppState.activeKeep)
     })
-    return { state }
+    async function createVaultKeep(keepId, vaultId) {
+      const newVaultKeep = { keepId: keepId, vaultId: vaultId }
+      await vaultKeepsService.createVaultKeep(newVaultKeep)
+    }
+    return {
+      route,
+      state,
+      createVaultKeep
+    }
   }
 
 }
