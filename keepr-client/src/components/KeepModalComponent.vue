@@ -8,7 +8,7 @@
             <div class="col-6 my-3">
               <img :src="keepProp.img" class="img-fluid rounded-lg" alt="">
             </div>
-            <div class="col-6" style="position: relative">
+            <div class="col-6 d-flex flex-column justify-content-between">
               <div class="row">
                 <div class="col-12">
                   <div class="modal-header">
@@ -45,10 +45,10 @@
                   </p>
                 </div>
               </div>
-              <div class="row my-3" style="position: absolute; bottom: 0; left: 0; width: 100%;">
+              <div class="row my-3">
                 <div class="col">
                   <div class="dropdown">
-                    <button class="btn btn-outline-primary dropdown-toggle"
+                    <button class="btn btn-outline-success dropdown-toggle"
                             type="button"
                             id="dropdownMenu2"
                             data-toggle="dropdown"
@@ -74,7 +74,8 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { computed, reactive } from 'vue'
+import { AppState } from '../AppState'
 export default {
   name: 'KeepModalComponent',
   props: {
@@ -85,6 +86,7 @@ export default {
   },
   setup(props) {
     const state = reactive({
+      myVaults: computed(() => AppState.myVaults)
     })
     return { state }
   }

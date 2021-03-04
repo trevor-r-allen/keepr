@@ -39,7 +39,7 @@
 --   FOREIGN KEY (creatorId)
 --     REFERENCES profiles (id)
 --     ON DELETE CASCADE
--- )
+-- );
 
 -- CREATE TABLE vaultkeeps
 -- (
@@ -61,4 +61,9 @@
 --   FOREIGN KEY (keepId)
 --     REFERENCES keeps (id)
 --     ON DELETE CASCADE
--- )
+-- );
+
+-- DROP TABLE vaultkeeps;
+-- DROP TABLE keeps;
+-- DROP TABLE vaults;
+

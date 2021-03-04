@@ -10,16 +10,20 @@
         <h6>Keeps: {{ state.keepCount }}</h6>
       </div>
     </div>
-    <div class="profileVaults row">
-      <div class="col">
-        <h1>Vaults</h1>
+    <div class="profileVaults row my-5">
+      <div class="col-2">
+        <h1>Vaults <i class="fa fa-plus text-primary" data-toggle="modal" data-target="#createVaultModal" aria-hidden="true"></i></h1>
+        <create-vault-modal />
       </div>
       <div class="masonry">
-        <vault-component />
+        <vault-component v-for="vault in state.profileVaults" :key="vault.id" :vault-prop="vault" />
       </div>
     </div>
-    <div class="profileKeeps row">
-      <h1>Keeps</h1>
+    <div class="profileKeeps row my-5">
+      <div class="col-2">
+        <h1>Keeps <i class="fa fa-plus text-primary" data-toggle="modal" data-target="#createKeepModal" aria-hidden="true"></i></h1>
+        <create-keep-modal />
+      </div>
       <div class="masonry">
         <keep-component v-for="keep in state.profileKeeps" :key="keep.id" :keep-prop="keep" />
       </div>
@@ -33,9 +37,11 @@ import { profilesService } from '../services/ProfilesService'
 import { useRoute } from 'vue-router'
 import { AppState } from '../AppState'
 import KeepComponent from '../components/KeepComponent.vue'
+import CreateVaultModal from '../components/CreateVaultModal.vue'
+import CreateKeepModal from '../components/CreateKeepModal.vue'
 
 export default {
-  components: { KeepComponent },
+  components: { KeepComponent, CreateVaultModal, CreateKeepModal },
   name: 'Profile',
   setup() {
     const route = useRoute()
@@ -45,7 +51,9 @@ export default {
       keepCount: computed(() => AppState.profileKeeps.length),
       vaultCount: computed(() => AppState.profileVaults.length),
       profileKeeps: computed(() => AppState.profileKeeps),
-      profileVaults: computed(() => AppState.profileVaults)
+      profileVaults: computed(() => AppState.profileVaults),
+      myKeeps: computed(() => AppState.myKeeps),
+      myVaults: computed(() => AppState.myVaults)
     })
     onMounted(() => {
       profilesService.getById(route.params.id)
