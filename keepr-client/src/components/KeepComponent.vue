@@ -7,7 +7,7 @@
       </h4>
       <img v-if="route.name == 'Home'" @click.stop="toProfilePage()" class="creatorPic img-fluid" :src="keepProp.creator.picture" alt="">
     </div>
-    <keep-modal-component :keep-prop="state.activeKeep" />
+    <keep-modal-component :keep-prop="keepProp" />
   </div>
 </template>
 

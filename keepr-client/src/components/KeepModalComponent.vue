@@ -70,7 +70,12 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-1">
+                <div class="col-4">
+                  <button v-if="state.activeVault.creatorId === state.account.id" @click="deleteVaultKeep(keepProp.vaultKeepId)" type="button" class="btn btn-outline-danger">
+                    Remove from vault
+                  </button>
+                </div>
+                <div class="col-1 p-1">
                   <i v-if="keepProp.creatorId == state.account.id" @click="deleteKeep(keepProp.id)" class="fa fa-trash fa-2x text-danger" aria-hidden="true"></i>
                 </div>
               </div>
@@ -101,20 +106,26 @@ export default {
     const state = reactive({
       account: computed(() => AppState.account),
       myVaults: computed(() => AppState.myVaults),
-      activeKeep: computed(() => AppState.activeKeep)
+      activeKeep: computed(() => AppState.activeKeep),
+      activeVault: computed(() => AppState.activeVault)
     })
     async function createVaultKeep(keepId, vaultId) {
       const newVaultKeep = { keepId: keepId, vaultId: vaultId }
       await vaultKeepsService.createVaultKeep(newVaultKeep)
     }
-    async function deleteKeep(keepId) {
-      await keepsService.deleteKeep(keepId)
+    async function deleteVaultKeep(vaultKeepId) {
       document.getElementById('closeModal' + props.keepProp.id).click()
+      await vaultKeepsService.deleteVaultKeep(vaultKeepId)
+    }
+    async function deleteKeep(keepId) {
+      document.getElementById('closeModal' + props.keepProp.id).click()
+      await keepsService.deleteKeep(keepId)
     }
     return {
       route,
       state,
       createVaultKeep,
+      deleteVaultKeep,
       deleteKeep
     }
   }

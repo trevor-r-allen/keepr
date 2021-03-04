@@ -1,8 +1,8 @@
 <template>
   <router-link :to="{name: 'Vault', params: {id: vaultProp.id}}">
-    <div class="vaultComponent card">
-      <img class="vaultImg card-img-top img-fluid" src="https://cash-connect.com/img/vault-round.jpg" alt="">
-      <h4 class="vaultName card-title text-light" style="position: absolute;">
+    <div class="vaultComponent card bg-dark">
+      <img class="vaultImg card-img-top img-fluid rounded-circle" src="https://cash-connect.com/img/vault-round.jpg" alt="">
+      <h4 class="vaultName card-title text-primary" style="position: absolute;">
         {{ vaultProp.name }}
       </h4>
     </div>

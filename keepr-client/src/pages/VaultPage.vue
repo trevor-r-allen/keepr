@@ -1,6 +1,12 @@
 <template>
   <div class="home flex-grow-1 container-fluid">
-    <h1>{{ state.activeVault.name }}</h1>
+    <div class="row mt-5">
+      <div class="col">
+        <h1>
+          {{ state.activeVault.name }} <i v-if="state.activeVault.creatorId === state.account.id" @click="deleteVault(state.activeVault.id)" class="fa fa-trash text-danger" aria-hidden="true"></i>
+        </h1>
+      </div>
+    </div>
     <div class="masonry justify-content-around mt-5">
       <keep-component v-for="keep in state.activeVaultKeeps" :key="keep.id" :keep-prop="keep" />
     </div>
@@ -11,26 +17,43 @@
 import { computed, onMounted, reactive } from 'vue'
 import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
-import { useRoute } from 'vue-router'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
+import router from '../router'
 export default {
   name: 'VaultPage',
   setup() {
     const route = useRoute()
     const state = reactive({
+      account: computed(() => AppState.account),
       activeVault: computed(() => AppState.activeVault),
       activeVaultKeeps: computed(() => AppState.activeVaultKeeps)
     })
+    async function deleteVault(vaultId) {
+      await vaultsService.deleteVault(vaultId)
+      router.push({ name: 'Profile', params: { id: state.account.id } })
+      AppState.activeVault = {}
+      AppState.activeVaultKeeps = []
+    }
     onMounted(() => {
       vaultsService.getVaultById(route.params.id)
       vaultsService.getKeepsByVaultId(route.params.id)
     })
+    onBeforeRouteLeave(() => {
+      AppState.activeVault = {}
+      AppState.activeVaultKeeps = []
+    })
     return {
-      state
+      state,
+      deleteVault
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import "../assets/css/global.css";
 
+.fa-trash:hover{
+  cursor: pointer;
+}
 </style>
