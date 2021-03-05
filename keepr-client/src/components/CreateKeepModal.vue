@@ -13,7 +13,7 @@
           <h5 class="modal-title" id="createKeepModal">
             Create A New Keep
           </h5>
-          <button id="createKeepCloseModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button id="createKeepCloseModal" type="button" class="close  text-danger" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>

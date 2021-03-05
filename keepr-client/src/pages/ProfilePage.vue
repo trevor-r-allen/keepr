@@ -12,7 +12,7 @@
     </div>
     <div class="profileVaults row my-5">
       <div class="col-2">
-        <h1>Vaults <i v-if="route.params.id == state.account.id" class="fa fa-plus text-primary" data-toggle="modal" data-target="#createVaultModal" aria-hidden="true"></i></h1>
+        <h1>Vaults <i v-if="route.params.id === state.account.id" class="fa fa-plus text-primary" data-toggle="modal" data-target="#createVaultModal" aria-hidden="true"></i></h1>
         <create-vault-modal />
       </div>
       <div v-if="route.params.id === state.account.id" class="masonry">
@@ -24,7 +24,7 @@
     </div>
     <div class="profileKeeps row my-5">
       <div class="col-2">
-        <h1>Keeps <i v-if="route.params.id == state.account.id" class="fa fa-plus text-primary" data-toggle="modal" data-target="#createKeepModal" aria-hidden="true"></i></h1>
+        <h1>Keeps <i v-if="route.params.id === state.account.id" class="fa fa-plus text-primary" data-toggle="modal" data-target="#createKeepModal" aria-hidden="true"></i></h1>
         <create-keep-modal />
       </div>
       <div v-if="route.params.id === state.account.id" class="masonry">

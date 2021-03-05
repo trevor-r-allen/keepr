@@ -71,7 +71,7 @@
                   </div>
                 </div>
                 <div class="col-4">
-                  <button v-if="state.activeVault.creatorId === state.account.id" @click="deleteVaultKeep(keepProp.vaultKeepId)" type="button" class="btn btn-outline-danger">
+                  <button v-if="state.user.isAuthenticated && state.activeVault.creatorId === state.account.id" @click="deleteVaultKeep(keepProp.vaultKeepId)" type="button" class="btn btn-outline-danger">
                     Remove from vault
                   </button>
                 </div>
@@ -93,6 +93,7 @@ import { AppState } from '../AppState'
 import { vaultKeepsService } from '../services/VaultKeepsService'
 import { useRoute } from 'vue-router'
 import { keepsService } from '../services/KeepsService'
+import NotificationsService from '../services/NotificationsService'
 export default {
   name: 'KeepModalComponent',
   props: {
@@ -105,6 +106,7 @@ export default {
     const route = useRoute()
     const state = reactive({
       account: computed(() => AppState.account),
+      user: computed(() => AppState.user),
       myVaults: computed(() => AppState.myVaults),
       activeKeep: computed(() => AppState.activeKeep),
       activeVault: computed(() => AppState.activeVault)
@@ -114,12 +116,16 @@ export default {
       await vaultKeepsService.createVaultKeep(newVaultKeep)
     }
     async function deleteVaultKeep(vaultKeepId) {
-      document.getElementById('closeModal' + props.keepProp.id).click()
-      await vaultKeepsService.deleteVaultKeep(vaultKeepId)
+      if (await NotificationsService.confirmAction()) {
+        document.getElementById('closeModal' + props.keepProp.id).click()
+        await vaultKeepsService.deleteVaultKeep(vaultKeepId)
+      }
     }
     async function deleteKeep(keepId) {
-      document.getElementById('closeModal' + props.keepProp.id).click()
-      await keepsService.deleteKeep(keepId)
+      if (await NotificationsService.confirmAction()) {
+        document.getElementById('closeModal' + props.keepProp.id).click()
+        await keepsService.deleteKeep(keepId)
+      }
     }
     return {
       route,

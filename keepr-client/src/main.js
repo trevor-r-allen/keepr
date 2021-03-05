@@ -6,10 +6,11 @@ import router from './router'
 import bootstrap from 'bootstrap'
 import jquery from 'jquery'
 import popper from 'popper.js'
+import swal from 'sweetalert2'
 
 const root = createApp(App)
 registerGlobalComponents(root)
 
 root
-  .use(router, bootstrap, jquery, popper)
+  .use(router, bootstrap, jquery, popper, swal)
   .mount('#app')

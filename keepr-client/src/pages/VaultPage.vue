@@ -3,7 +3,7 @@
     <div class="row mt-5">
       <div class="col">
         <h1>
-          {{ state.activeVault.name }} <i v-if="user.isAuthenticated && (state.activeVault.creatorId === state.account.id)" @click="deleteVault(state.activeVault.id)" class="fa fa-trash text-danger" aria-hidden="true"></i>
+          {{ state.activeVault.name }} <i v-if="(state.user.isAuthenticated && state.activeVault.creatorId === state.account.id)" @click="deleteVault(state.activeVault.id)" class="fa fa-trash text-danger" aria-hidden="true"></i>
         </h1>
       </div>
     </div>
@@ -19,6 +19,7 @@ import { AppState } from '../AppState'
 import { vaultsService } from '../services/VaultsService'
 import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import router from '../router'
+import NotificationsService from '../services/NotificationsService'
 export default {
   name: 'VaultPage',
   setup() {
@@ -30,10 +31,12 @@ export default {
       activeVaultKeeps: computed(() => AppState.activeVaultKeeps)
     })
     async function deleteVault(vaultId) {
-      await vaultsService.deleteVault(vaultId)
-      router.push({ name: 'Profile', params: { id: state.account.id } })
-      AppState.activeVault = {}
-      AppState.activeVaultKeeps = []
+      if (await NotificationsService.confirmAction()) {
+        await vaultsService.deleteVault(vaultId)
+        router.push({ name: 'Profile', params: { id: state.account.id } })
+        AppState.activeVault = {}
+        AppState.activeVaultKeeps = []
+      }
     }
     onMounted(() => {
       vaultsService.getVaultById(route.params.id)
