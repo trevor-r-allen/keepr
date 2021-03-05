@@ -28,9 +28,13 @@ namespace keepr.Services
       }
       return vault;
     }
-    internal IEnumerable<Vault> GetVaultsByProfileId(string profileId)
+    internal IEnumerable<Vault> GetVaultsByProfileId(string profileId, string userId)
     {
-      return _vaultsRepo.GetVaultsByProfileId(profileId).ToList().FindAll(vault => vault.IsPrivate == false);
+      if (profileId != userId)
+      {
+        return _vaultsRepo.GetVaultsByProfileId(profileId).ToList().FindAll(vault => vault.IsPrivate == false);
+      }
+      return _vaultsRepo.GetVaultsByProfileId(profileId);
     }
 
     internal Vault Create(Vault newVault)
