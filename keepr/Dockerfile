@@ -4,4 +4,4 @@ COPY ./bin/Release/net5.0/publish/ App/
 
 WORKDIR /App
 
-CMD ASPNETCORE_URLS=http://*:$PORT dotnet docker-demo.dll
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet keepr.dll
